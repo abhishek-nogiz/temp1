@@ -50,7 +50,7 @@ class BrowserSession:
 
     def start(self):
         self.playwright = sync_playwright().start()
-        print("STEP 2: Playwright started")
+
         launch_args = {
             "headless": self.headless,
             "args": [
@@ -61,10 +61,6 @@ class BrowserSession:
                 "--disable-dev-shm-usage",
             ],
         }
-        print("STEP 3: Playwright end")
-        executable_path = os.getenv("CHROMIUM_EXECUTABLE_PATH")
-        if executable_path:
-            launch_args["executable_path"] = executable_path
         if self.proxy:
             launch_args["proxy"] = {"server": self.proxy}
 
@@ -72,14 +68,9 @@ class BrowserSession:
             self.browser = self.playwright.chromium.launch(**launch_args)
         except PlaywrightError as exc:
             message = str(exc)
-            system_chromium = shutil.which("chromium") or shutil.which("chromium-browser") or shutil.which("google-chrome")
-            if ("Executable doesn't exist" in message or "playwright install" in message.lower()) and system_chromium:
-                launch_args["executable_path"] = system_chromium
-                self.browser = self.playwright.chromium.launch(**launch_args)
-            elif "Executable doesn't exist" in message or "playwright install" in message.lower():
+            if "Executable doesn't exist" in message or "playwright install" in message.lower():
                 raise RuntimeError(
-                    "Playwright browser binaries are missing. Run: playwright install chromium, "
-                    "or set CHROMIUM_EXECUTABLE_PATH=/path/to/chromium."
+                    "Playwright browser binaries are missing. Ensure Playwright's Chromium is installed."
                 ) from exc
             else:
                 raise
