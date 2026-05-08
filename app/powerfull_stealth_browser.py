@@ -114,6 +114,7 @@ class PowerfulStealthBrowser:
                 "--no-first-run",
                 "--no-zygote",
                 "--disable-gpu",
+                "--single-process",
             ],
         }
 
