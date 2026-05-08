@@ -106,10 +106,13 @@ def _fallback_body(page) -> bytes:
     except Exception:
         pass
 
-    body_text = page.evaluate(
-        "() => document.body.innerText || document.body.textContent || ''"
-    )
-    return body_text.encode("utf-8")
+    try:
+        body_text = page.evaluate(
+            "() => document.body.innerText || document.body.textContent || ''"
+        )
+        return body_text.encode("utf-8")
+    except Exception:
+        return b""
 
 
 def fetch_with_stealth_browser(
@@ -149,9 +152,12 @@ def fetch_with_stealth_browser(
         except Exception:
             pass
 
-        time.sleep(random.uniform(2.5, 5.0))
-        browser.human_like_scroll(amount=random.randint(300, 700))
-        time.sleep(random.uniform(0.8, 2.0))
+        try:
+            time.sleep(random.uniform(2.5, 5.0))
+            browser.human_like_scroll(amount=random.randint(300, 700))
+            time.sleep(random.uniform(0.8, 2.0))
+        except Exception:
+            pass
 
         page.on("response", on_response)
         goto_response = None
@@ -189,4 +195,7 @@ def fetch_with_stealth_browser(
             final_url=response.url,
         )
     finally:
-        browser.close()
+        try:
+            browser.close()
+        except Exception:
+            pass
