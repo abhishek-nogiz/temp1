@@ -121,9 +121,7 @@ class PowerfulStealthBrowser:
         if self.proxy:
             launch_args["proxy"] = {"server": self.proxy}
 
-        executable_path = os.getenv("CHROMIUM_EXECUTABLE_PATH")
-        if executable_path:
-            launch_args["executable_path"] = executable_path
+
 
         try:
             self.browser = self.playwright.chromium.launch(**launch_args)
