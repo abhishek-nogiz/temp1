@@ -50,7 +50,7 @@ class BrowserSession:
 
     def start(self):
         self.playwright = sync_playwright().start()
-
+        print("STEP 2: Playwright started")
         launch_args = {
             "headless": self.headless,
             "args": [
@@ -61,6 +61,7 @@ class BrowserSession:
                 "--disable-dev-shm-usage",
             ],
         }
+        print("STEP 3: Playwright end")
         executable_path = os.getenv("CHROMIUM_EXECUTABLE_PATH")
         if executable_path:
             launch_args["executable_path"] = executable_path
