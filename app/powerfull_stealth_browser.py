@@ -103,18 +103,8 @@ class PowerfulStealthBrowser:
         launch_args = {
             "headless": self.headless,
             "args": [
-                "--disable-blink-features=AutomationControlled",
-                "--disable-features=IsolateOrigins,site-per-process,SitePerProcess",
-                "--disable-site-isolation-trials",
-                "--disable-web-security",
-                "--disable-setuid-sandbox",
                 "--no-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-accelerated-2d-canvas",
-                "--no-first-run",
-                "--no-zygote",
-                "--disable-gpu",
-                "--single-process",
+                "--disable-dev-shm-usage"
             ],
         }
 
