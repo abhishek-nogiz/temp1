@@ -268,7 +268,7 @@ async def run_workflow(request: WorkflowRequest):
 
 @app.post("/fetch")
 @app.get("/fetch")
-def fetch_url(
+async def fetch_url(
     request: Request,
     timeout_ms: int = Query(default=30000, ge=1, description="Navigation timeout in milliseconds."),
     wait_until: str = Query(default="domcontentloaded", description="Playwright navigation wait condition."),
@@ -281,14 +281,17 @@ def fetch_url(
         values = request.query_params.getlist(key)
         params[key] = values if len(values) > 1 else values[0]
 
-    try:
-        result = fetch_with_stealth_browser(
+    def _work():
+        return fetch_with_stealth_browser(
             url=_TRUSTPILOT_FETCH_URL,
             params=params,
             warm_up_url=_TRUSTPILOT_WARM_UP_URL,
             timeout_ms=timeout_ms,
             wait_until=wait_until,
         )
+
+    try:
+        result = await _run_in_thread(_work)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except Exception as exc:
