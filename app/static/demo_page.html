@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechHire Pro — Find Your Dream Job</title>
+<style>
+  :root { --bg: #0f0f1a; --card: #1a1a2e; --accent: #6c5ce7; --accent2: #a29bfe; --text: #e0e0e0; --muted: #888; --border: #2d2d44; --success: #00b894; --danger: #e17055; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+  /* HEADER — obfuscated classes like real SPAs */
+  .css-9xk2mq { display: flex; align-items: center; justify-content: space-between; padding: 16px 40px; background: rgba(26,26,46,0.95); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+  .css-9xk2mq .sc-logo-3f { font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .css-nav-7k { display: flex; gap: 24px; list-style: none; }
+  .css-nav-7k a { color: var(--muted); text-decoration: none; font-size: 0.95rem; transition: color 0.2s; }
+  .css-nav-7k a:hover { color: var(--accent2); }
+  .css-auth-btn { padding: 8px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 0.9rem; }
+  .css-auth-btn.sc-login { background: transparent; border: 1px solid var(--accent); color: var(--accent2); margin-right: 8px; }
+  .css-auth-btn.sc-signup { background: var(--accent); color: #fff; }
+
+  /* HERO / SEARCH */
+  .sc-hero-8m2 { text-align: center; padding: 60px 40px 40px; }
+  .sc-hero-8m2 h1 { font-size: 2.4rem; margin-bottom: 12px; }
+  .sc-hero-8m2 p { color: var(--muted); font-size: 1.1rem; margin-bottom: 30px; }
+  .css-search-bar { display: flex; max-width: 600px; margin: 0 auto; gap: 0; }
+  .css-search-bar input { flex: 1; padding: 14px 20px; border: 1px solid var(--border); border-right: none; border-radius: 10px 0 0 10px; background: var(--card); color: var(--text); font-size: 1rem; outline: none; }
+  .css-search-bar input:focus { border-color: var(--accent); }
+  .css-search-bar button { padding: 14px 28px; background: var(--accent); color: #fff; border: none; border-radius: 0 10px 10px 0; cursor: pointer; font-size: 1rem; font-weight: 600; }
+
+  /* FILTERS */
+  .sc-filters-2x { display: flex; gap: 12px; justify-content: center; padding: 0 40px 30px; flex-wrap: wrap; }
+  .sc-filter-chip { padding: 6px 16px; border-radius: 20px; border: 1px solid var(--border); background: var(--card); color: var(--muted); font-size: 0.85rem; cursor: pointer; }
+  .sc-filter-chip.active { border-color: var(--accent); color: var(--accent2); background: rgba(108,92,231,0.1); }
+
+  /* JOB CARDS */
+  .css-grid-4n { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; padding: 0 40px 40px; max-width: 1200px; margin: 0 auto; }
+  .sc-card-7j { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; transition: transform 0.2s, border-color 0.2s; }
+  .sc-card-7j:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .sc-card-7j .css-title-2k { font-size: 1.15rem; font-weight: 600; margin-bottom: 6px; }
+  .sc-card-7j .css-company-9m { color: var(--accent2); font-size: 0.95rem; margin-bottom: 10px; }
+  .sc-card-7j .css-meta-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+  .sc-card-7j .css-meta-tag { font-size: 0.8rem; color: var(--muted); padding: 3px 10px; background: rgba(255,255,255,0.04); border-radius: 6px; }
+  .sc-card-7j .css-desc-5p { font-size: 0.88rem; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
+  .sc-card-7j .css-actions-row { display: flex; justify-content: space-between; align-items: center; }
+  .css-apply-btn { padding: 8px 22px; background: var(--accent); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; text-decoration: none; display: inline-block; }
+  .css-save-btn { background: none; border: 1px solid var(--border); color: var(--muted); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; }
+  .css-salary-tag { font-size: 0.95rem; color: var(--success); font-weight: 600; }
+
+  /* LOGIN MODAL */
+  .sc-login-section { max-width: 400px; margin: 40px auto; padding: 30px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; }
+  .sc-login-section h2 { margin-bottom: 20px; font-size: 1.3rem; }
+  .sc-login-section label { display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 6px; margin-top: 14px; }
+  .sc-login-section input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 0.95rem; }
+  .sc-login-section .css-submit-btn { width: 100%; margin-top: 20px; padding: 12px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; font-weight: 600; }
+  .sc-login-section .css-forgot-link { display: block; text-align: center; margin-top: 14px; color: var(--accent2); font-size: 0.85rem; text-decoration: none; }
+
+  /* PAGINATION */
+  .css-pagination-3r { display: flex; justify-content: center; gap: 10px; padding: 30px 0 60px; }
+  .css-pagination-3r button { padding: 10px 20px; border: 1px solid var(--border); background: var(--card); color: var(--text); border-radius: 8px; cursor: pointer; }
+  .css-pagination-3r button.active { background: var(--accent); border-color: var(--accent); }
+
+  /* FOOTER */
+  .sc-footer-9z { padding: 30px 40px; border-top: 1px solid var(--border); text-align: center; color: var(--muted); font-size: 0.85rem; }
+  .sc-footer-9z a { color: var(--accent2); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="css-9xk2mq">
+  <div class="sc-logo-3f">TechHire Pro</div>
+  <nav>
+    <ul class="css-nav-7k">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#jobs">Jobs</a></li>
+      <li><a href="#companies">Companies</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+  <div>
+    <button class="css-auth-btn sc-login" role="button">Log In</button>
+    <button class="css-auth-btn sc-signup" role="button">Sign Up</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="sc-hero-8m2">
+  <h1>Find Your Next Career Move</h1>
+  <p>Thousands of engineering roles from top companies, updated daily.</p>
+  <div class="css-search-bar">
+    <input type="text" name="job_search" placeholder="Search jobs, companies, or keywords..." aria-label="Search jobs">
+    <button type="button">Search</button>
+  </div>
+</section>
+
+<!-- FILTERS -->
+<div class="sc-filters-2x">
+  <span class="sc-filter-chip active">All Jobs</span>
+  <span class="sc-filter-chip">Remote</span>
+  <span class="sc-filter-chip">Full-Time</span>
+  <span class="sc-filter-chip">Part-Time</span>
+  <span class="sc-filter-chip">Internship</span>
+  <span class="sc-filter-chip">Contract</span>
+</div>
+
+<!-- JOB LISTINGS -->
+<div class="css-grid-4n" id="job-listings">
+
+  <article class="sc-card-7j">
+    <div class="css-title-2k">Senior Frontend Engineer</div>
+    <div class="css-company-9m">Vercel Inc.</div>
+    <div class="css-meta-row">
+      <span class="css-meta-tag">📍 San Francisco, CA</span>
+      <span class="css-meta-tag">🏠 Remote OK</span>
+      <span class="css-meta-tag">⏰ Full-Time</span>
+    </div>
+    <div class="css-desc-5p">Build the future of web deployment. Work on Next.js, Turborepo, and developer tooling used by millions.</div>
+    <div class="css-actions-row">
+      <a href="https://vercel.com/careers" class="css-apply-btn" target="_blank">Apply Now</a>
+      <span class="css-salary-tag">$180k – $240k</span>
+    </div>
+  </article>
+
+  <article class="sc-card-7j">
+    <div class="css-title-2k">ML Platform Engineer</div>
+    <div class="css-company-9m">OpenAI</div>
+    <div class="css-meta-row">
+      <span class="css-meta-tag">📍 San Francisco, CA</span>
+      <span class="css-meta-tag">🏢 On-Site</span>
+      <span class="css-meta-tag">⏰ Full-Time</span>
+    </div>
+    <div class="css-desc-5p">Design and scale ML infrastructure powering GPT models. Kubernetes, distributed training, GPU clusters.</div>
+    <div class="css-actions-row">
+      <a href="https://openai.com/careers" class="css-apply-btn" target="_blank">Apply Now</a>
+      <span class="css-salary-tag">$200k – $310k</span>
+    </div>
+  </article>
+
+  <article class="sc-card-7j">
+    <div class="css-title-2k">Backend Engineer — Payments</div>
+    <div class="css-company-9m">Stripe</div>
+    <div class="css-meta-row">
+      <span class="css-meta-tag">📍 Seattle, WA</span>
+      <span class="css-meta-tag">🏠 Remote OK</span>
+      <span class="css-meta-tag">⏰ Full-Time</span>
+    </div>
+    <div class="css-desc-5p">Build reliable, low-latency payment APIs handling billions in transactions. Ruby, Go, distributed systems.</div>
+    <div class="css-actions-row">
+      <a href="https://stripe.com/jobs" class="css-apply-btn" target="_blank">Apply Now</a>
+      <span class="css-salary-tag">$170k – $250k</span>
+    </div>
+  </article>
+
+  <article class="sc-card-7j">
+    <div class="css-title-2k">DevOps / SRE Lead</div>
+    <div class="css-company-9m">Datadog</div>
+    <div class="css-meta-row">
+      <span class="css-meta-tag">📍 New York, NY</span>
+      <span class="css-meta-tag">🏢 Hybrid</span>
+      <span class="css-meta-tag">⏰ Full-Time</span>
+    </div>
+    <div class="css-desc-5p">Lead SRE practices for a cloud monitoring platform. Terraform, Kubernetes, incident response at scale.</div>
+    <div class="css-actions-row">
+      <a href="https://careers.datadoghq.com" class="css-apply-btn" target="_blank">Apply Now</a>
+      <span class="css-salary-tag">$160k – $220k</span>
+    </div>
+  </article>
+
+  <article class="sc-card-7j">
+    <div class="css-title-2k">Junior Data Analyst</div>
+    <div class="css-company-9m">Airbnb</div>
+    <div class="css-meta-row">
+      <span class="css-meta-tag">📍 Austin, TX</span>
+      <span class="css-meta-tag">🏠 Remote OK</span>
+      <span class="css-meta-tag">⏰ Full-Time</span>
+    </div>
+    <div class="css-desc-5p">Analyze marketplace data, build dashboards, drive product decisions with SQL, Python, and Looker.</div>
+    <div class="css-actions-row">
+      <a href="https://careers.airbnb.com" class="css-apply-btn" target="_blank">Apply Now</a>
+      <span class="css-salary-tag">$90k – $130k</span>
+    </div>
+  </article>
+
+  <article class="sc-card-7j">
+    <div class="css-title-2k">iOS Engineer — SwiftUI</div>
+    <div class="css-company-9m">Figma</div>
+    <div class="css-meta-row">
+      <span class="css-meta-tag">📍 San Francisco, CA</span>
+      <span class="css-meta-tag">🏢 On-Site</span>
+      <span class="css-meta-tag">⏰ Full-Time</span>
+    </div>
+    <div class="css-desc-5p">Build Figma's native iOS app from the ground up. SwiftUI, Metal, real-time collaboration protocols.</div>
+    <div class="css-actions-row">
+      <a href="https://figma.com/careers" class="css-apply-btn" target="_blank">Apply Now</a>
+      <span class="css-salary-tag">$165k – $230k</span>
+    </div>
+  </article>
+
+</div>
+
+<!-- PAGINATION -->
+<div class="css-pagination-3r">
+  <button>← Previous</button>
+  <button class="active">1</button>
+  <button>2</button>
+  <button>3</button>
+  <button>Next →</button>
+</div>
+
+<!-- LOGIN SECTION -->
+<section class="sc-login-section" id="login">
+  <h2>Sign In to Your Account</h2>
+  <label for="email-input">Email Address</label>
+  <input type="email" id="email-input" name="email" placeholder="you@example.com" aria-label="Email address">
+  <label for="password-input">Password</label>
+  <input type="password" id="password-input" name="password" placeholder="Enter your password" aria-label="Password">
+  <button class="css-submit-btn" type="button">Sign In</button>
+  <a href="#forgot" class="css-forgot-link">Forgot your password?</a>
+</section>
+
+<!-- FOOTER -->
+<footer class="sc-footer-9z">
+  <p>© 2026 TechHire Pro. Built to test <a href="https://github.com/user/tinyfish2">TinyFish2</a> semantic queries.</p>
+  <p style="margin-top:8px;">
+    <a href="https://news.ycombinator.com" target="_blank">Hacker News</a> ·
+    <a href="https://github.com" target="_blank">GitHub</a> ·
+    <a href="https://stackoverflow.com" target="_blank">Stack Overflow</a>
+  </p>
+</footer>
+
+</body>
+</html>
