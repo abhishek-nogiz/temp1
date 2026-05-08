@@ -267,6 +267,7 @@ async def run_workflow(request: WorkflowRequest):
 
 
 @app.post("/fetch")
+@app.get("/fetch")
 def fetch_url(
     request: Request,
     timeout_ms: int = Query(default=30000, ge=1, description="Navigation timeout in milliseconds."),
@@ -370,7 +371,7 @@ def health_check():
         "status": "ok",
         "version": "5.0",
         "llm_available": llm_available(),
-        "pool_sessions": len(get_pool().list_sessions()) if get_pool() else 0,
+        "pool_sessions": len(_pool.list_sessions()) if _pool else 0,
     }
 
 
